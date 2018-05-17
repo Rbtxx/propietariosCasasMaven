@@ -35,11 +35,22 @@ public class Casas {
         }
     }
     
-    void borrarCasa(int id, double precio, String direccion, double metros, boolean garaje, boolean ascensor){
+    void borrarCasa(int id){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
             st.executeUpdate("DELETE FROM CASAS WHERE "+id+" = id");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    void modificarCasa(int id, double precio, String direccion, double metros, boolean garaje, boolean ascensor){
+        Conexion.cargarDriverMysql();
+        try(Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            st.executeUpdate("UPDATE CASAS SET ID ="+id+" , PRECIO = "+precio+", DIRECCION = "
+                    +direccion+", METROS = "+metros+", GARAJE = "+garaje+", ASCENSOR = "+ascensor+" WHERE ID = "+id+";");
         }catch(Exception e){
             System.out.println(e);
         }

@@ -31,7 +31,7 @@ public class Propietarios {
         }
     }
     
-    void borrarPropietario(int dni, String nombre, String apellido){
+    void borrarPropietario(int dni){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
@@ -41,8 +41,14 @@ public class Propietarios {
         }
     }
     
-    void modificarPropietario(){
-        
+    void modificarPropietario(int dni, String nombre, String apellido){
+        Conexion.cargarDriverMysql();
+        try(Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            st.executeUpdate("UPDATE PROPIETARIOS SET DNI = "+dni+", NOMBRE = "+nombre+", APELLIDO = "+apellido+" WHERE DNI = "+dni+";");
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
     
     
