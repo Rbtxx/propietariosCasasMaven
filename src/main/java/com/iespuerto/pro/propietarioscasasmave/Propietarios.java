@@ -33,6 +33,7 @@ public class Propietarios {
             boolean ascensor = false;
             boolean garaje = false;
             int ultimoId = 0;
+            Casas c;
             st.executeUpdate("SELECT max(ID) INTO"+ ultimoId + "FROM CASAS");            
             for (int i = 0; i < ultimoId; i++) {
                 st.executeUpdate("SELECT ID INTO"+ id + "FROM CASAS");
@@ -41,7 +42,7 @@ public class Propietarios {
                 st.executeUpdate("SELECT metros INTO"+ metros + "FROM CASAS");
                 st.executeUpdate("SELECT ascensor INTO"+ ascensor + "FROM CASAS");
                 st.executeUpdate("SELECT garaje INTO"+ garaje + "FROM CASAS");
-                Casas c = new Casas(id, direccion, precio, metros, garaje, ascensor);
+                c = new Casas(id, direccion, precio, metros, garaje, ascensor);
                 casas.add(c);
             }
             
@@ -49,11 +50,10 @@ public class Propietarios {
             System.out.println(e);
         }
     }
-    public Propietarios(String nombre, String apellido, String dni, ArrayList<Casas> casas) {
+    public Propietarios(String nombre, String apellido, String dni) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-        this.casas = casas;
     }
 
     public String getNombre() {
