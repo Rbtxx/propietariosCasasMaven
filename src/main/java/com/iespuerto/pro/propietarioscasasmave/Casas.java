@@ -29,7 +29,7 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO CASAS VALUES("+id+"precio"+"direccion"+"metros"+"garaje"+"ascensor"+");");
+            st.executeUpdate("INSERT INTO CASAS VALUES("+id+","+precio+","+direccion+","+metros+","+garaje+","+ascensor+");");
         }catch(Exception e){
             System.out.println(e);
         }

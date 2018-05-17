@@ -21,6 +21,30 @@ public class Propietarios {
     ArrayList<Casas> casas;
 
     
+    void crearPropietarios(int dni, String nombre, String apellido){
+        Conexion.cargarDriverMysql();
+        try(Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            st.executeUpdate("INSERT INTO PROPIETARIOS VALUES("+dni+","+nombre+","+apellido+");");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    void borrarPropietario(int dni, String nombre, String apellido){
+        Conexion.cargarDriverMysql();
+        try(Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            st.executeUpdate("DELETE FROM PROPIETARIOS WHERE "+dni+" = dni");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    void modificarPropietario(){
+        
+    }
+    
     
     void generarArray(){
         Conexion.cargarDriverMysql();
