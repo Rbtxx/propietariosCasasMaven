@@ -6,6 +6,7 @@
 package com.iespuerto.pro.propietarioscasasmave;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ public class Propietarios {
     String nombre;
     String apellido;
     String dni;
+    int id;
     
     ArrayList<Casas> casas;
 
@@ -24,11 +26,22 @@ public class Propietarios {
     }
 
     
-    void crearPropietarios(String dni, String nombre, String apellido){
+    
+    void vincularPropietario(int id, String dni){
+        Conexion.cargarDriverMysql();
+        try (Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            st.executeUpdate("INSERT INTO casasPropietarios VALUES('"+dni+"',"+id+")");
+        } catch (Exception e) {
+        }
+    }
+    
+    void crearPropietarios(String dni, String nombre, String apellido, int id){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO PROPIETARIOS VALUES("+dni+","+nombre+","+apellido+");");
+            st.executeUpdate("INSERT INTO Propietarios VALUES('"+dni+"','"+nombre+"','"+apellido+"','"+id+"')");
+            st.close();
         }catch(Exception e){
             System.out.println(e);
         }
@@ -38,7 +51,8 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("DELETE FROM PROPIETARIOS WHERE "+dni+" = dni");
+            st.executeUpdate("DELETE FROM Propietarios WHERE "+dni+" = dni");
+            st.close();
         }catch(Exception e){
             System.out.println(e);
         }
@@ -48,10 +62,25 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("UPDATE PROPIETARIOS SET DNI = "+dni+", NOMBRE = "+nombre+", APELLIDO = "+apellido+" WHERE DNI = "+dni+";");
+            st.executeUpdate("UPDATE Propietarios SET dni = '"+dni+"', nombre = '"+nombre+"', apellido = '"+apellido+"' WHERE dni = '"+dni+"'");
+            st.close();
         }catch(Exception e){
             System.out.println(e);
         }
+    }
+    
+    int getUltimoPropietario(){
+        int ret = 0;
+        Conexion.cargarDriverMysql();
+        try(Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            ResultSet res = st.executeQuery("SELECT max(id) as maximo FROM Propietarios");
+            ret = res.getInt("maximo");
+            st.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return ret;
     }
     
     
@@ -65,28 +94,33 @@ public class Propietarios {
             String direccion = "";
             boolean ascensor = false;
             boolean garaje = false;
-            int ultimoId = 0;
             Casas c;
-            st.executeUpdate("SELECT max(ID) INTO"+ ultimoId + "FROM CASAS");            
-            for (int i = 0; i < ultimoId; i++) {
-                st.executeUpdate("SELECT ID INTO"+ id + "FROM CASAS");
-                st.executeUpdate("SELECT direccion INTO"+ direccion + "FROM CASAS");
-                st.executeUpdate("SELECT precio INTO"+ precio + "FROM CASAS");
-                st.executeUpdate("SELECT metros INTO"+ metros + "FROM CASAS");
-                st.executeUpdate("SELECT ascensor INTO"+ ascensor + "FROM CASAS");
-                st.executeUpdate("SELECT garaje INTO"+ garaje + "FROM CASAS");
+            ResultSet res = st.executeQuery("SELECT * FROM casas");
+            while (res.next()) {
+                id = res.getInt("id");
+                precio = res.getDouble("precio");
+                metros = res.getDouble("metros");
+                direccion = res.getString("direccion");
+                ascensor = res.getBoolean("ascensor");
+                garaje = res.getBoolean("garaje");
                 c = new Casas(id, direccion, precio, metros, garaje, ascensor);
                 casas.add(c);
-            }
-            
+            }   
+            st.close();
         }catch(Exception e){
             System.out.println(e);
         }
     }
-    public Propietarios(String nombre, String apellido, String dni) {
+    public Propietarios(String nombre, String apellido, String dni, int id) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
+    }
+
+    @Override
+    public String toString() {
+        return "Propietarios{" + "nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", id=" + id + ", casas=" + casas + '}';
     }
 
     public String getNombre() {

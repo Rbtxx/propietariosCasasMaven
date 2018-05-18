@@ -2,13 +2,21 @@ package com.iespuerto.pro.propietarioscasasmave;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class FXMLController implements Initializable {
 
@@ -74,6 +82,44 @@ public class FXMLController implements Initializable {
     private Button btnGuardarC;
     @FXML
     private Button btnGuardarP;
+    @FXML
+    private Tab layerCasas;
+    @FXML
+    private Tab layerPropietarios;
+    @FXML
+    private TextField txtNombreC;
+    @FXML
+    private TextField txtApellidoC;
+    @FXML
+    private Button btnAtrasPC;
+    @FXML
+    private Button btnSiguientePC;
+    @FXML
+    private Label lblDNI1;
+    @FXML
+    private TextField txtDNIC;
+    @FXML
+    private TextArea txaPropietario;
+    @FXML
+    private TextField txtDireccionP;
+    @FXML
+    private TextField txtPrecioP;
+    @FXML
+    private TextField txtMetrosP;
+    @FXML
+    private Button btnAtrasCasaP;
+    @FXML
+    private Button btnSiguienteCasaP;
+    @FXML
+    private CheckBox chkGarajeP;
+    @FXML
+    private CheckBox chkAscensorP;
+    @FXML
+    private TextArea txaCasa;
+    
+    int idPropietario = 0;
+    int contadorPropietarios = 0;
+    int contadorCasas = 0;
 
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -103,8 +149,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void crearCasa(ActionEvent event) {
-
-        c.crearCasa(Double.parseDouble(txtPrecio.getText()), txtDireccion.getText(), Double.parseDouble(txtMetros.getText()), chkGaraje.isSelected(), chkAscensor.isSelected());
+        int ultimoIdCasa = c.getUltimoID();
+        c.crearCasa(Double.parseDouble(txtPrecio.getText()), txtDireccion.getText()
+                , Double.parseDouble(txtMetros.getText()), chkGaraje.isSelected(), chkAscensor.isSelected(), ultimoIdCasa);
 
         p.generarArray();
         txtDireccion.setDisable(true);
@@ -112,7 +159,7 @@ public class FXMLController implements Initializable {
         txtMetros.setDisable(true);
         chkGaraje.setDisable(true);
         chkAscensor.setDisable(true);
-        txtDireccion.setText(p.casas.get(0).getDireccion());
+        txtDireccion.setText(p.casas.get(0).direccion);
         txtPrecio.setText("" + p.casas.get(0).getPrecio());
         txtMetros.setText("" + p.casas.get(0).getMetros());
         chkAscensor.setSelected(p.casas.get(0).isAscensor());
@@ -159,6 +206,9 @@ public class FXMLController implements Initializable {
     private void casaAnterior(ActionEvent event) {
 
         indexC--;
+        if (indexC < 0) {
+            indexC = c.getUltimoID();
+        }
         txtDireccion.setText(p.casas.get(indexC).getDireccion());
         txtPrecio.setText("" + p.casas.get(indexC).getPrecio());
         txtMetros.setText("" + p.casas.get(indexC).getMetros());
@@ -170,6 +220,9 @@ public class FXMLController implements Initializable {
     @FXML
     private void casaSiguiente(ActionEvent event) {
         indexC++;
+        if (indexC > c.getUltimoID()) {
+            indexC = 0;
+        }
         txtDireccion.setText(p.casas.get(indexC).getDireccion());
         txtPrecio.setText("" + p.casas.get(indexC).getPrecio());
         txtMetros.setText("" + p.casas.get(indexC).getMetros());
@@ -236,7 +289,8 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void guardarCambiosC(ActionEvent event) {
-        c.modificarCasa(Double.parseDouble(txtPrecio.getText()), txtDireccion.getText(), Double.parseDouble(txtMetros.getText()), chkGaraje.isSelected(), chkAscensor.isSelected());
+        c.modificarCasa(Double.parseDouble(txtPrecio.getText()), txtDireccion.getText()
+                , Double.parseDouble(txtMetros.getText()), chkGaraje.isSelected(), chkAscensor.isSelected(), c.id);
         p.generarArray();
         txtDireccion.setDisable(true);
         txtPrecio.setDisable(true);
@@ -261,12 +315,16 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void vincularCasa(ActionEvent event) {
+        String dni = txtDNIC.getText();
+        int id = p.casas.get(contadorCasas).id;
+        c.vincularCasa(id, dni);
     }
 
     @FXML
     private void crearPropietario(ActionEvent event) {
 
-        p.crearPropietarios(txtDNI.getText(), txtNombre.getText(), txtApellido.getText());
+        p.crearPropietarios(txtDNI.getText(), txtNombre.getText(), txtApellido.getText(), idPropietario);
+        idPropietario++;
         c.generarArray();
         txtNombre.setDisable(true);
         txtApellido.setDisable(true);
@@ -308,6 +366,9 @@ public class FXMLController implements Initializable {
     @FXML
     private void propietarioAnterior(ActionEvent event) {
         indexP--;
+        if (indexP < 0) {
+            indexP = p.getUltimoPropietario();
+        }
         txtNombre.setText(c.propietarios.get(indexP).getNombre());
         txtApellido.setText("" + c.propietarios.get(indexP).getApellido());
         txtDNI.setText("" + c.propietarios.get(indexP).getDni());
@@ -317,6 +378,9 @@ public class FXMLController implements Initializable {
     @FXML
     private void propietarioSiguiente(ActionEvent event) {
         indexP++;
+        if (indexP > p.getUltimoPropietario()) {
+            indexP = 0;
+        }
         txtNombre.setText(c.propietarios.get(indexP).getNombre());
         txtApellido.setText("" + c.propietarios.get(indexP).getApellido());
         txtDNI.setText("" + c.propietarios.get(indexP).getDni());
@@ -324,6 +388,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void vincularPropietario(ActionEvent event) {
+        int id = p.casas.get(contadorPropietarios).id;
+        String dni = txtDNI.getText();
+        c.vincularCasa(id, dni);
     }
 
     @FXML
@@ -393,5 +460,64 @@ public class FXMLController implements Initializable {
         txtDNI.setText("" + c.propietarios.get(0).getDni());
 
         indexP = 0;
+    }    
+
+    @FXML
+    private void propietarioAnteriorC(MouseEvent event) {
+        if(contadorPropietarios < 0) {
+            contadorPropietarios = p.getUltimoPropietario();
+        }
+        Propietarios pC = c.propietarios.get(contadorPropietarios);        
+        txtNombreC.setText(pC.nombre);
+        txtApellidoC.setText(pC.apellido);
+        txtDNIC.setText(pC.dni);
+        txaPropietario.appendText(c.propietarios.toString());
+        contadorPropietarios--;
     }
+
+    @FXML
+    private void propietarioSiguienteC(MouseEvent event) {
+        int max = p.getUltimoPropietario();
+        if(contadorPropietarios > max) {
+            contadorPropietarios = 0;
+        }
+        Propietarios pC = c.propietarios.get(contadorPropietarios);        
+        txtNombreC.setText(pC.nombre);
+        txtApellidoC.setText(pC.apellido);
+        txtDNIC.setText(pC.dni);
+        txaPropietario.appendText(c.propietarios.toString());
+        contadorPropietarios++;
+    }
+
+    @FXML
+    private void casaAnteriorP(MouseEvent event) {
+        if (contadorCasas < 0) {
+            contadorCasas = c.getUltimoID();
+        }
+        Casas cP = p.casas.get(contadorCasas);
+        txtDireccionP.setText(cP.direccion);
+        txtMetrosP.setText(""+cP.metros);
+        txtPrecioP.setText(""+cP.precio);
+        chkAscensorP.setSelected(cP.ascensor);
+        chkGarajeP.setSelected(cP.garaje);
+        txaCasa.appendText(p.casas.toString());
+        contadorCasas--;
+    }
+
+    @FXML
+    private void casaSiguienteP(MouseEvent event) {
+        int max = c.getUltimoID();
+        if (contadorCasas > max) {
+            contadorCasas = 0;
+        }
+        Casas cP = p.casas.get(contadorCasas);
+        txtDireccionP.setText(cP.direccion);
+        txtMetrosP.setText(""+cP.metros);
+        txtPrecioP.setText(""+cP.precio);
+        chkAscensorP.setSelected(cP.ascensor);
+        chkGarajeP.setSelected(cP.garaje);
+        txaCasa.appendText(p.casas.toString());
+        contadorCasas++;
+    }
+    
 }
