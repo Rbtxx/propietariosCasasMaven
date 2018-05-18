@@ -20,12 +20,15 @@ public class Casas {
     boolean garaje;
     boolean ascensor;
     int id;
+
+    public Casas() {
+    }
     
     
     ArrayList<Propietarios> propietarios;
     
     
-    void crearCasa(int id, double precio, String direccion, double metros, boolean garaje, boolean ascensor){
+    void crearCasa(double precio, String direccion, double metros, boolean garaje, boolean ascensor){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
@@ -45,7 +48,7 @@ public class Casas {
         }
     }
     
-    void modificarCasa(int id, double precio, String direccion, double metros, boolean garaje, boolean ascensor){
+    void modificarCasa(double precio, String direccion, double metros, boolean garaje, boolean ascensor){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();

@@ -20,8 +20,11 @@ public class Propietarios {
     
     ArrayList<Casas> casas;
 
+    public Propietarios() {
+    }
+
     
-    void crearPropietarios(int dni, String nombre, String apellido){
+    void crearPropietarios(String dni, String nombre, String apellido){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
@@ -31,7 +34,7 @@ public class Propietarios {
         }
     }
     
-    void borrarPropietario(int dni){
+    void borrarPropietario(String dni){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
@@ -41,7 +44,7 @@ public class Propietarios {
         }
     }
     
-    void modificarPropietario(int dni, String nombre, String apellido){
+    void modificarPropietario(String dni, String nombre, String apellido){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
