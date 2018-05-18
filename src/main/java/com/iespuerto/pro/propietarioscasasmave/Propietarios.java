@@ -20,7 +20,7 @@ public class Propietarios {
     String dni;
     int id;
     
-    ArrayList<Casas> casas;
+    ArrayList<Casas> casas = new ArrayList<Casas>();
 
     public Propietarios() {
     }
@@ -31,7 +31,7 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try (Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO casasPropietarios VALUES('"+dni+"',"+id+")");
+            st.executeUpdate("INSERT INTO propietarioscasas VALUES('"+dni+"',"+id+")");
         } catch (Exception e) {
         }
     }
@@ -40,7 +40,7 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO Propietarios VALUES('"+dni+"','"+nombre+"','"+apellido+"','"+id+"')");
+            st.executeUpdate("INSERT INTO propietarios VALUES('"+dni+"','"+nombre+"','"+apellido+"',"+id+")");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -51,7 +51,7 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("DELETE FROM Propietarios WHERE "+dni+" = dni");
+            st.executeUpdate("DELETE FROM propietarios WHERE '"+dni+"' = dni");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -62,7 +62,7 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("UPDATE Propietarios SET dni = '"+dni+"', nombre = '"+nombre+"', apellido = '"+apellido+"' WHERE dni = '"+dni+"'");
+            st.executeUpdate("UPDATE propietarios SET dni = '"+dni+"', nombre = '"+nombre+"', apellido = '"+apellido+"' WHERE dni = '"+dni+"'");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -74,7 +74,7 @@ public class Propietarios {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            ResultSet res = st.executeQuery("SELECT max(id) as maximo FROM Propietarios");
+            ResultSet res = st.executeQuery("SELECT max(id) as maximo FROM propietarios");
             ret = res.getInt("maximo");
             st.close();
         }catch(Exception e){
@@ -97,7 +97,7 @@ public class Propietarios {
             Casas c;
             ResultSet res = st.executeQuery("SELECT * FROM casas");
             while (res.next()) {
-                id = res.getInt("id");
+                id = res.getInt("idcasas");
                 precio = res.getDouble("precio");
                 metros = res.getDouble("metros");
                 direccion = res.getString("direccion");

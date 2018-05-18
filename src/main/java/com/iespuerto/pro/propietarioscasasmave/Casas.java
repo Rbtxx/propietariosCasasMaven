@@ -26,13 +26,13 @@ public class Casas {
     }
     
     
-    ArrayList<Propietarios> propietarios;
+    ArrayList<Propietarios> propietarios = new ArrayList<Propietarios>();
     
     void vincularCasa(int id, String dni){
         Conexion.cargarDriverMysql();
         try (Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO casasPropietarios VALUES('"+dni+"',"+id+")");
+            st.executeUpdate("INSERT INTO propietarioscasas VALUES('"+dni+"',"+id+")");
         } catch (Exception e) {
         }
     }
@@ -42,7 +42,7 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            ResultSet res = st.executeQuery("SELECT max(id) as maximo FROM casas");
+            ResultSet res = st.executeQuery("SELECT max(idcasas) as maximo FROM casas");
             ret = res.getInt("maximo");
             st.close();
         }catch(Exception e){
@@ -55,7 +55,8 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO casas VALUES("+id+","+precio+","+direccion+","+metros+","+garaje+","+ascensor+");");
+            st.executeUpdate("INSERT INTO casas(idcasas, direccion, metros, precio, garaje, ascensor) "
+                    + "VALUES("+id+",'"+direccion+"',"+metros+","+precio+","+garaje+","+ascensor+");");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -66,7 +67,7 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("DELETE FROM casas WHERE "+id+" = id");
+            st.executeUpdate("DELETE FROM casas WHERE "+id+" = idcasas");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -78,7 +79,7 @@ public class Casas {
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
             st.executeUpdate("UPDATE casas SET precio = '"+precio+"', direccion = '"
-                    +direccion+"', metros = '"+metros+"', garaje = '"+garaje+"', ascensor = '"+ascensor+"' WHERE id = "+id+";");
+                    +direccion+"', metros = '"+metros+"', garaje = '"+garaje+"', ascensor = '"+ascensor+"' WHERE idcasas = "+id+";");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -93,8 +94,8 @@ public class Casas {
             String nombre = "";
             String apellido = "";
             int id = 0;
-            Propietarios p;  
-            ResultSet res = st.executeQuery("SELECT * FROM Propietarios");
+            Propietarios p = new Propietarios();  
+            ResultSet res = st.executeQuery("SELECT * FROM propietarios");
             while (res.next()) {
                 dni = res.getString("dni");
                 nombre = res.getString("nombre");
@@ -111,7 +112,20 @@ public class Casas {
 
     @Override
     public String toString() {
-        return "Casas{" + "direccion=" + direccion + ", precio=" + precio + ", metros=" + metros + ", garaje=" + garaje + ", ascensor=" + ascensor + ", id=" + id + ", propietarios=" + propietarios + '}';
+        String tieneAscensor;
+        String tieneGaraje;
+        if (ascensor) {
+            tieneAscensor = "Sí";
+        }else{
+            tieneAscensor = "No";
+        }
+        if (garaje) {
+            tieneGaraje = "Sí";
+        }else{
+            tieneGaraje = "No";
+        }
+        return "Casa: " + id + "\n-Direccion: " + direccion + "\n-Metros: " + metros + "\n-Precio: " + precio
+                + "\n-Ascensor: " + tieneAscensor + "\n-Garaje: " + tieneGaraje + "\n";
     }
 
     public Casas(int id, String direccion, double precio, double metros, boolean garaje, boolean ascensor) {
