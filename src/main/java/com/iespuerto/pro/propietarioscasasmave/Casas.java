@@ -42,7 +42,7 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            ResultSet res = st.executeQuery("SELECT max(idcasas) as maximo FROM casas");
+            ResultSet res = st.executeQuery("SELECT max(id) as maximo FROM casas");
             ret = res.getInt("maximo");
             st.close();
         }catch(Exception e){
@@ -55,7 +55,7 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("INSERT INTO casas(idcasas, direccion, metros, precio, garaje, ascensor) "
+            st.executeUpdate("INSERT INTO casas(id, direccion, metros, precio, garaje, ascensor) "
                     + "VALUES("+id+",'"+direccion+"',"+metros+","+precio+","+garaje+","+ascensor+");");
             st.close();
         }catch(Exception e){
@@ -67,7 +67,7 @@ public class Casas {
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("DELETE FROM casas WHERE "+id+" = idcasas");
+            st.executeUpdate("DELETE FROM casas WHERE "+id+" = id");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -79,7 +79,7 @@ public class Casas {
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
             st.executeUpdate("UPDATE casas SET precio = '"+precio+"', direccion = '"
-                    +direccion+"', metros = '"+metros+"', garaje = '"+garaje+"', ascensor = '"+ascensor+"' WHERE idcasas = "+id+";");
+                    +direccion+"', metros = '"+metros+"', garaje = '"+garaje+"', ascensor = '"+ascensor+"' WHERE id = "+id+";");
             st.close();
         }catch(Exception e){
             System.out.println(e);

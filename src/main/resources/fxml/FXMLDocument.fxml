@@ -8,13 +8,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="598.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iespuerto.pro.propietarioscasasmave.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="598.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iespuerto.pro.propietarioscasasmave.FXMLController">
    <children>
-      <MenuBar prefHeight="29.0" prefWidth="668.0">
+      <MenuBar prefHeight="29.0" prefWidth="719.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -33,46 +34,43 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TabPane layoutY="28.0" prefHeight="570.0" prefWidth="668.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="28.0" prefHeight="570.0" prefWidth="719.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="layerCasas" text="Casas">
+          <Tab fx:id="tabCasas" onSelectionChanged="#tabCasasSelected" text="Casas">
             <content>
-              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="541.0" prefWidth="680.0">
+              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="541.0" prefWidth="721.0">
                      <children>
-                        <TextField fx:id="txtDireccion" layoutX="106.0" layoutY="59.0" prefHeight="25.0" prefWidth="189.0" />
+                        <TextField fx:id="txtDireccion" layoutX="106.0" layoutY="59.0" prefHeight="25.0" prefWidth="187.0" />
                         <TextField fx:id="txtPrecio" layoutX="105.0" layoutY="97.0" prefHeight="25.0" prefWidth="188.0" />
                         <TextField fx:id="txtMetros" layoutX="106.0" layoutY="136.0" prefHeight="25.0" prefWidth="186.0" />
                         <Label layoutX="31.0" layoutY="64.0" text="Direccion" />
                         <Label layoutX="34.0" layoutY="102.0" text="Precio" />
                         <Label layoutX="32.0" layoutY="141.0" text="Metros" />
-                        <Button fx:id="btnVincularCasa" layoutX="18.0" layoutY="374.0" mnemonicParsing="false" onAction="#vincularCasa" prefHeight="26.0" prefWidth="149.0" text="Vincular casa" />
+                        <Button fx:id="btnVincularCasa" layoutX="100.0" layoutY="219.0" mnemonicParsing="false" onAction="#vincularCasa" prefHeight="26.0" prefWidth="193.0" text="Vincular casa" />
                         <Button fx:id="btnAtras" layoutX="30.0" layoutY="219.0" mnemonicParsing="false" onAction="#casaAnterior" text="&lt;" />
                         <Button fx:id="btnSiguiente" layoutX="63.0" layoutY="219.0" mnemonicParsing="false" onAction="#casaSiguiente" text="&gt;" />
-                        <Button fx:id="btnNuevaCasa" layoutX="103.0" layoutY="219.0" mnemonicParsing="false" onAction="#nuevaCasa" prefHeight="26.0" prefWidth="185.0" text="Nueva casa" />
-                        <Button fx:id="btnBorrarCasa" layoutX="17.0" layoutY="264.0" mnemonicParsing="false" onAction="#borrarCasa" prefHeight="26.0" prefWidth="178.0" text="Borrar casa" />
+                        <Button fx:id="btnNuevaCasa" layoutX="21.0" layoutY="366.0" mnemonicParsing="false" onAction="#nuevaCasa" prefHeight="26.0" prefWidth="276.0" text="Nueva casa" />
+                        <Button fx:id="btnBorrarCasa" layoutX="20.0" layoutY="264.0" mnemonicParsing="false" onAction="#borrarCasa" prefHeight="26.0" prefWidth="274.0" text="Borrar casa" />
                         <CheckBox fx:id="chkGaraje" layoutX="30.0" layoutY="183.0" mnemonicParsing="false" text="Garaje" />
                         <CheckBox fx:id="chkAscensor" layoutX="158.0" layoutY="183.0" mnemonicParsing="false" text="Ascensor" />
-                        <Button fx:id="btnCrearCasa" layoutX="17.0" layoutY="413.0" mnemonicParsing="false" onAction="#crearCasa" prefHeight="26.0" prefWidth="277.0" text="Crear casa" />
-                        <Button fx:id="btnCancelar" layoutX="196.0" layoutY="374.0" mnemonicParsing="false" onAction="#cancelarCasa" prefHeight="25.0" prefWidth="98.0" text="Cancelar" />
-                        <Button fx:id="btnModificarC" layoutX="17.0" layoutY="301.0" mnemonicParsing="false" onAction="#modificarCasa" prefHeight="25.0" prefWidth="165.0" text="Modificar casa" />
-                        <Button fx:id="btnGuardarC" layoutX="17.0" layoutY="339.0" mnemonicParsing="false" onAction="#guardarCambiosC" text="Guardar cambios" />
-                        <TextField fx:id="txtNombreC" disable="true" layoutX="484.0" layoutY="101.0" />
-                        <Label layoutX="424.0" layoutY="105.0" text="Nombre" />
-                        <Label layoutX="424.0" layoutY="145.0" text="Apellido" />
-                        <TextField fx:id="txtApellidoC" disable="true" layoutX="484.0" layoutY="141.0" />
-                        <Button fx:id="btnAtrasPC" layoutX="423.0" layoutY="191.0" mnemonicParsing="false" onMouseClicked="#propietarioAnteriorC" prefHeight="25.0" prefWidth="93.0" text="&lt;" />
-                        <Button fx:id="btnSiguientePC" layoutX="547.0" layoutY="191.0" mnemonicParsing="false" onMouseClicked="#propietarioSiguienteC" prefHeight="25.0" prefWidth="86.0" text="&gt;" />
-                        <Label fx:id="lblDNI1" layoutX="435.0" layoutY="67.0" text="DNI" />
-                        <TextField fx:id="txtDNIC" disable="true" layoutX="484.0" layoutY="63.0" />
+                        <Button fx:id="btnCrearCasa" layoutX="21.0" layoutY="399.0" mnemonicParsing="false" onAction="#crearCasa" prefHeight="26.0" prefWidth="277.0" text="Crear casa" />
+                        <Button fx:id="btnCancelar" layoutX="159.0" layoutY="333.0" mnemonicParsing="false" onAction="#cancelarCasa" prefHeight="25.0" prefWidth="136.0" text="Cancelar" />
+                        <Button fx:id="btnModificarC" layoutX="21.0" layoutY="297.0" mnemonicParsing="false" onAction="#modificarCasa" prefHeight="29.0" prefWidth="274.0" text="Modificar casa" />
+                        <Button fx:id="btnGuardarC" layoutX="22.0" layoutY="333.0" mnemonicParsing="false" onAction="#guardarCambiosC" prefHeight="25.0" prefWidth="133.0" text="Guardar cambios" />
                         <Label layoutX="144.0" layoutY="25.0" text="Casas" />
-                        <Label layoutX="527.0" layoutY="28.0" text="Propietarios" />
-                        <TextArea fx:id="txaPropietario" editable="false" layoutX="382.0" layoutY="271.0" prefHeight="257.0" prefWidth="271.0" />
-                        <Label layoutX="464.0" layoutY="237.0" prefHeight="17.0" prefWidth="117.0" text="Casas del propietario" />
+                        <TableView fx:id="tableViewP" layoutX="310.0" layoutY="58.0" prefHeight="476.0" prefWidth="394.0">
+                          <columns>
+                            <TableColumn fx:id="tablePColDNI" prefWidth="111.0" text="DNI" />
+                              <TableColumn fx:id="tablePColNombre" prefWidth="109.0" text="Nombre" />
+                              <TableColumn fx:id="tablePColApellido" prefWidth="173.0" text="Apellido" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="475.0" layoutY="25.0" text="Propietarios" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="layerPropietarios" text="Propietarios">
+          <Tab fx:id="tabPropietarios" onSelectionChanged="#tabPropietariosSelected" text="Propietarios">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -80,30 +78,29 @@
                         <Label layoutX="26.0" layoutY="87.0" text="Nombre" />
                         <Label layoutX="26.0" layoutY="124.0" text="Apellido" />
                         <TextField fx:id="txtApellido" layoutX="112.0" layoutY="119.0" />
-                        <Button fx:id="btnAtrasP" layoutX="26.0" layoutY="221.0" mnemonicParsing="false" onAction="#propietarioAnterior" text="&lt;" />
-                        <Button fx:id="btnSiguienteP" layoutX="65.0" layoutY="221.0" mnemonicParsing="false" onAction="#propietarioSiguiente" text="&gt;" />
-                        <Button fx:id="btnNuevoPropietario" layoutX="120.0" layoutY="221.0" mnemonicParsing="false" onAction="#nuevoPropietario" text="Nuevo propietario" />
-                        <Button fx:id="btnVincularPropietario" layoutX="17.0" layoutY="272.0" mnemonicParsing="false" onAction="#vincularPropietario" text="Vincular propietario" />
-                        <Button fx:id="btnBorrarPropietario" layoutX="22.0" layoutY="325.0" mnemonicParsing="false" onAction="#borrarPropietario" text="Borrar propietario" />
-                        <Button fx:id="btnCrearPropietario" layoutX="15.0" layoutY="407.0" mnemonicParsing="false" onAction="#crearPropietario" text="Crear propietario" />
+                        <Button fx:id="btnAtrasP" layoutX="36.0" layoutY="209.0" mnemonicParsing="false" onAction="#propietarioAnterior" text="&lt;" />
+                        <Button fx:id="btnSiguienteP" layoutX="67.0" layoutY="209.0" mnemonicParsing="false" onAction="#propietarioSiguiente" text="&gt;" />
+                        <Button fx:id="btnNuevoPropietario" layoutX="23.0" layoutY="374.0" mnemonicParsing="false" onAction="#nuevoPropietario" prefHeight="25.0" prefWidth="235.0" text="Nuevo propietario" />
+                        <Button fx:id="btnVincularPropietario" layoutX="101.0" layoutY="209.0" mnemonicParsing="false" onAction="#vincularPropietario" prefHeight="25.0" prefWidth="158.0" text="Vincular propietario" />
+                        <Button fx:id="btnBorrarPropietario" layoutX="24.0" layoutY="271.0" mnemonicParsing="false" onAction="#borrarPropietario" prefHeight="25.0" prefWidth="236.0" text="Borrar propietario" />
+                        <Button fx:id="btnCrearPropietario" layoutX="23.0" layoutY="407.0" mnemonicParsing="false" onAction="#crearPropietario" prefHeight="25.0" prefWidth="236.0" text="Crear propietario" />
                         <Label fx:id="lblDNI" layoutX="38.0" layoutY="160.0" text="DNI" />
                         <TextField fx:id="txtDNI" layoutX="112.0" layoutY="156.0" />
-                        <Button fx:id="btnCancelarP" layoutX="207.0" layoutY="272.0" mnemonicParsing="false" onAction="#cancelarPropietario" text="Cancelar" />
-                        <Button fx:id="btnModificarP" layoutX="13.0" layoutY="367.0" mnemonicParsing="false" onAction="#modificarPropietario" text="Modificar propietario" />
-                        <Button fx:id="btnGuardarP" layoutX="15.0" layoutY="450.0" mnemonicParsing="false" onAction="#guardarCambiosCP" text="Guardar cambios" />
-                        <TextField fx:id="txtDireccionP" disable="true" layoutX="465.0" layoutY="120.0" prefHeight="25.0" prefWidth="189.0" />
-                        <TextField fx:id="txtPrecioP" disable="true" layoutX="466.0" layoutY="161.0" prefHeight="25.0" prefWidth="188.0" />
-                        <TextField fx:id="txtMetrosP" disable="true" layoutX="466.0" layoutY="83.0" prefHeight="25.0" prefWidth="186.0" />
-                        <Label layoutX="402.0" layoutY="87.0" text="Direccion" />
-                        <Label layoutX="411.0" layoutY="160.0" text="Precio" />
-                        <Label layoutX="408.0" layoutY="124.0" text="Metros" />
-                        <Button fx:id="btnAtrasCasaP" layoutX="427.0" layoutY="243.0" mnemonicParsing="false" onMouseClicked="#casaAnteriorP" prefHeight="25.0" prefWidth="106.0" text="&lt;" />
-                        <Button fx:id="btnSiguienteCasaP" layoutX="547.0" layoutY="243.0" mnemonicParsing="false" onMouseClicked="#casaSiguienteP" prefHeight="25.0" prefWidth="106.0" text="&gt;" />
-                        <CheckBox fx:id="chkGarajeP" disable="true" layoutX="466.0" layoutY="204.0" mnemonicParsing="false" text="Garaje" />
-                        <CheckBox fx:id="chkAscensorP" disable="true" layoutX="570.0" layoutY="204.0" mnemonicParsing="false" text="Ascensor" />
-                        <TextArea fx:id="txaCasa" editable="false" layoutX="366.0" layoutY="312.0" prefHeight="215.0" prefWidth="289.0" />
-                        <Label layoutX="125.0" layoutY="39.0" text="Propietario" />
-                        <Label layoutX="507.0" layoutY="39.0" text="Casa" />
+                        <Button fx:id="btnCancelarP" layoutX="147.0" layoutY="342.0" mnemonicParsing="false" onAction="#cancelarPropietario" prefHeight="25.0" prefWidth="111.0" text="Cancelar" />
+                        <Button fx:id="btnModificarP" layoutX="23.0" layoutY="305.0" mnemonicParsing="false" onAction="#modificarPropietario" prefHeight="25.0" prefWidth="236.0" text="Modificar propietario" />
+                        <Button fx:id="btnGuardarP" layoutX="23.0" layoutY="342.0" mnemonicParsing="false" onAction="#guardarCambiosCP" prefHeight="25.0" prefWidth="113.0" text="Guardar cambios" />
+                        <TableView fx:id="tableViewC" layoutX="269.0" layoutY="82.0" prefHeight="448.0" prefWidth="447.0">
+                          <columns>
+                            <TableColumn fx:id="tableColCID" prefWidth="30.0" text="ID" />
+                            <TableColumn fx:id="tableColCDireccion" prefWidth="144.0" text="Direccion" />
+                              <TableColumn fx:id="tableColCPrecio" prefWidth="84.0" text="Precio" />
+                              <TableColumn fx:id="tableColCMetros" prefWidth="67.0" text="Metros" />
+                              <TableColumn fx:id="tableColCGaraje" prefWidth="56.0" text="Garaje" />
+                              <TableColumn fx:id="tableColCAscensor" prefWidth="65.0" text="Ascensor" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="101.0" layoutY="34.0" text="Propietario" />
+                        <Label layoutX="479.0" layoutY="34.0" text="Casas" />
                      </children></AnchorPane>
             </content>
           </Tab>

@@ -82,54 +82,74 @@ public class FXMLController implements Initializable {
     private Button btnGuardarC;
     @FXML
     private Button btnGuardarP;
-    @FXML
-    private Tab layerCasas;
-    @FXML
-    private Tab layerPropietarios;
-    @FXML
     private TextField txtNombreC;
-    @FXML
     private TextField txtApellidoC;
-    @FXML
-    private Button btnAtrasPC;
-    @FXML
-    private Button btnSiguientePC;
-    @FXML
-    private Label lblDNI1;
-    @FXML
     private TextField txtDNIC;
-    @FXML
     private TextArea txaPropietario;
-    @FXML
     private TextField txtDireccionP;
-    @FXML
     private TextField txtPrecioP;
-    @FXML
     private TextField txtMetrosP;
-    @FXML
-    private Button btnAtrasCasaP;
-    @FXML
-    private Button btnSiguienteCasaP;
-    @FXML
     private CheckBox chkGarajeP;
-    @FXML
     private CheckBox chkAscensorP;
-    @FXML
     private TextArea txaCasa;
     
     int idPropietario = 0;
     int contadorPropietarios = 0;
     int contadorCasas = 0;
+    @FXML
+    private TableColumn<Propietarios, String> tablePColDNI;
+    @FXML
+    private TableColumn<Propietarios, String> tablePColNombre;
+    @FXML
+    private TableColumn<Propietarios, String> tablePColApellido;
+    @FXML
+    private TableView<Propietarios> tableViewP;
+    @FXML
+    private Tab tabCasas;
+    @FXML
+    private Tab tabPropietarios;
+    @FXML
+    private TableColumn<Casas, Integer> tableColCID;
+    @FXML
+    private TableColumn<Casas, String> tableColCDireccion;
+    @FXML
+    private TableColumn<Casas, Double> tableColCPrecio;
+    @FXML
+    private TableColumn<Casas, Double> tableColCMetros;
+    @FXML
+    private TableColumn<Casas, Boolean> tableColCGaraje;
+    @FXML
+    private TableColumn<Casas, Boolean> tableColCAscensor;
+    @FXML
+    private TableView<Casas> tableViewC;
 
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
     }
 
+    private void crearTablaC(){
+        tableColCID.setCellValueFactory(new PropertyValueFactory<Casas,Integer>("id"));
+        tableColCDireccion.setCellValueFactory(new PropertyValueFactory<Casas,String>("direccion"));
+        tableColCMetros.setCellValueFactory(new PropertyValueFactory<Casas,Double>("metros"));
+        tableColCPrecio.setCellValueFactory(new PropertyValueFactory<Casas,Double>("precio"));
+        tableColCAscensor.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("ascensor"));
+        tableColCGaraje.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("garaje"));
+        tableViewC.setItems(FXCollections.observableArrayList(p.casas));
+    }
+    
+    private void crearTablaP(){
+        tablePColDNI.setCellValueFactory(new PropertyValueFactory<Propietarios,String>("dni"));
+        tablePColNombre.setCellValueFactory(new PropertyValueFactory<Propietarios,String>("nombre"));
+        tablePColApellido.setCellValueFactory(new PropertyValueFactory<Propietarios,String>("apellido"));
+        tableViewP.setItems(FXCollections.observableArrayList(c.propietarios));
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         c.generarArray();
         p.generarArray();
+        crearTablaP();
+        crearTablaC();
         btnCrearCasa.setDisable(true);
         btnCrearPropietario.setDisable(true);
         btnCancelar.setDisable(true);
@@ -315,7 +335,7 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void vincularCasa(ActionEvent event) {
-        String dni = txtDNIC.getText();
+        String dni = tableViewP.getSelectionModel().getSelectedItem().dni;
         int id = p.casas.get(contadorCasas).id;
         c.vincularCasa(id, dni);
     }
@@ -389,9 +409,10 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void vincularPropietario(ActionEvent event) {
-        int id = p.casas.get(contadorPropietarios).id;
+        int id = tableViewC.getSelectionModel().getSelectedItem().id;
         String dni = txtDNI.getText();
-        c.vincularCasa(id, dni);
+        
+        p.vincularPropietario(id, dni);
     }
 
     @FXML
@@ -463,7 +484,6 @@ public class FXMLController implements Initializable {
         indexP = 0;
     }    
 
-    @FXML
     private void propietarioAnteriorC(MouseEvent event) {
         if(contadorPropietarios < 0) {
             contadorPropietarios = c.propietarios.size() - 1;
@@ -476,7 +496,6 @@ public class FXMLController implements Initializable {
         contadorPropietarios--;
     }
 
-    @FXML
     private void propietarioSiguienteC(MouseEvent event) {
         if(contadorPropietarios >= c.propietarios.size()) {
             contadorPropietarios = 0;
@@ -489,7 +508,6 @@ public class FXMLController implements Initializable {
         contadorPropietarios++;
     }
 
-    @FXML
     private void casaAnteriorP(MouseEvent event) {
         System.out.println("comienzo");
         if (contadorCasas < 0) {
@@ -508,7 +526,6 @@ public class FXMLController implements Initializable {
         System.out.println("\n\nllegoo aquii");
     }
 
-    @FXML
     private void casaSiguienteP(MouseEvent event) {
         //int max = c.propietarios.size() - 1;
         int max = p.casas.size();
@@ -523,6 +540,16 @@ public class FXMLController implements Initializable {
         chkGarajeP.setSelected(cP.garaje);
         txaCasa.appendText(p.casas.toString());
         contadorCasas++;
+    }
+
+    @FXML
+    private void tabCasasSelected(Event event) {
+        crearTablaP();
+    }
+
+    @FXML
+    private void tabPropietariosSelected(Event event) {
+        crearTablaC();
     }
     
 }

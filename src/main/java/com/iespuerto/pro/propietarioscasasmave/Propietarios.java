@@ -32,7 +32,9 @@ public class Propietarios {
         try (Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
             st.executeUpdate("INSERT INTO propietarioscasas VALUES('"+dni+"',"+id+")");
+            st.close();
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
     
@@ -97,7 +99,7 @@ public class Propietarios {
             Casas c;
             ResultSet res = st.executeQuery("SELECT * FROM casas");
             while (res.next()) {
-                id = res.getInt("idcasas");
+                id = res.getInt("id");
                 precio = res.getDouble("precio");
                 metros = res.getDouble("metros");
                 direccion = res.getString("direccion");
