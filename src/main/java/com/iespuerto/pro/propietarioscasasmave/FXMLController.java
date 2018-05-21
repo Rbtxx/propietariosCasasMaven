@@ -373,6 +373,9 @@ public class FXMLController implements Initializable {
         String dni = tableViewP.getSelectionModel().getSelectedItem().dni;
         int id = p.casas.get(contadorCasas).id;
         c.vincularCasa(id, dni);
+        Propietarios p = tableViewP.getSelectionModel().getSelectedItem();
+        Propietarios temp = p.generarArrayPropietariosCasas(p);
+        crearTablaC1(temp);
     }
 
     @FXML
@@ -601,9 +604,8 @@ public class FXMLController implements Initializable {
         Propietarios p = tableViewP.getSelectionModel().getSelectedItem();
         Casas c = tableViewC1.getSelectionModel().getSelectedItem();
         c.borrarVinculo(c);
-        crearTablaC1(p);
-        tableViewC1.getSelectionModel().clearSelection();
-        tableViewC1.refresh();
+        Propietarios temp = p.generarArrayPropietariosCasas(p);
+        crearTablaC1(temp);
         btnBorrarVinculo.setDisable(true);
     }
 
