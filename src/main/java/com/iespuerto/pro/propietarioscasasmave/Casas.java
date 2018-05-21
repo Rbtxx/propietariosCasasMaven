@@ -87,6 +87,7 @@ public class Casas {
     }
     
     void generarArray(){
+        propietarios.clear();
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();

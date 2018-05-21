@@ -122,6 +122,20 @@ public class FXMLController implements Initializable {
     private TableColumn<Casas, Boolean> tableColCAscensor;
     @FXML
     private TableView<Casas> tableViewC;
+    @FXML
+    private TableView<Casas> tableViewC1;
+    @FXML
+    private TableColumn<Casas, Integer> tableColCID1;
+    @FXML
+    private TableColumn<Casas, String> tableColCDireccion1;
+    @FXML
+    private TableColumn<Casas, Double> tableColCPrecio1;
+    @FXML
+    private TableColumn<Casas, Double> tableColCMetros1;
+    @FXML
+    private TableColumn<Casas, Boolean> tableColCGaraje1;
+    @FXML
+    private TableColumn<Casas, Boolean> tableColCAscensor1;
 
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -164,6 +178,14 @@ public class FXMLController implements Initializable {
         txtDNI.setDisable(true);
         btnGuardarC.setDisable(true);
         btnGuardarP.setDisable(true);
+        txtDireccion.setText(p.casas.get(contadorCasas).getDireccion());
+        txtPrecio.setText("" + p.casas.get(contadorCasas).getPrecio());
+        txtMetros.setText("" + p.casas.get(contadorCasas).getMetros());
+        chkAscensor.setSelected(p.casas.get(contadorCasas).isAscensor());
+        chkGaraje.setSelected(p.casas.get(contadorCasas).isGaraje());
+        txtNombre.setText(c.propietarios.get(contadorPropietarios).getNombre());
+        txtApellido.setText("" + c.propietarios.get(contadorPropietarios).getApellido());
+        txtDNI.setText("" + c.propietarios.get(contadorPropietarios).getDni());
 
     }
 
@@ -226,29 +248,30 @@ public class FXMLController implements Initializable {
     private void casaAnterior(ActionEvent event) {
 
         
-        if (contadorCasas < 0) {
-            contadorCasas = p.casas.size() - 1;
+        if (contadorCasas <= 0) {
+            contadorCasas = p.casas.size();
         }
+        contadorCasas--;
         txtDireccion.setText(p.casas.get(contadorCasas).getDireccion());
         txtPrecio.setText("" + p.casas.get(contadorCasas).getPrecio());
         txtMetros.setText("" + p.casas.get(contadorCasas).getMetros());
         chkAscensor.setSelected(p.casas.get(contadorCasas).isAscensor());
         chkGaraje.setSelected(p.casas.get(contadorCasas).isGaraje());
-        contadorCasas--;
+        
     }
 
     @FXML
     private void casaSiguiente(ActionEvent event) {
         
-        if (contadorCasas >= p.casas.size()) {
-            contadorCasas = 0;
+        if (contadorCasas >= p.casas.size()-1) {
+            contadorCasas = -1;
         }
+        contadorCasas++;
         txtDireccion.setText(p.casas.get(contadorCasas).getDireccion());
         txtPrecio.setText("" + p.casas.get(contadorCasas).getPrecio());
         txtMetros.setText("" + p.casas.get(contadorCasas).getMetros());
         chkAscensor.setSelected(p.casas.get(contadorCasas).isAscensor());
         chkGaraje.setSelected(p.casas.get(contadorCasas).isGaraje());
-        contadorCasas++;
     }
 
     @FXML
@@ -386,25 +409,27 @@ public class FXMLController implements Initializable {
     @FXML
     private void propietarioAnterior(ActionEvent event) {
         
-        if (contadorPropietarios < 0) {
-            contadorPropietarios = c.propietarios.size() - 1;
+        if (contadorPropietarios <= 0) {
+            contadorPropietarios = c.propietarios.size();
         }
+        contadorPropietarios--;
         txtNombre.setText(c.propietarios.get(contadorPropietarios).getNombre());
         txtApellido.setText("" + c.propietarios.get(contadorPropietarios).getApellido());
         txtDNI.setText("" + c.propietarios.get(contadorPropietarios).getDni());
-        contadorPropietarios--;
+        
     }
 
     @FXML
     private void propietarioSiguiente(ActionEvent event) {
         
-        if (contadorPropietarios >= c.propietarios.size()) {
-            contadorPropietarios = 0;
+        if (contadorPropietarios >= c.propietarios.size() - 1) {
+            contadorPropietarios = -1;
         }
+        contadorPropietarios++;
         txtNombre.setText(c.propietarios.get(contadorPropietarios).getNombre());
         txtApellido.setText("" + c.propietarios.get(contadorPropietarios).getApellido());
         txtDNI.setText("" + c.propietarios.get(contadorPropietarios).getDni());
-        contadorPropietarios++;
+        
     }
 
     @FXML
@@ -550,6 +575,19 @@ public class FXMLController implements Initializable {
     @FXML
     private void tabPropietariosSelected(Event event) {
         crearTablaC();
+    }
+
+    @FXML
+    private void mostrarCasas(MouseEvent event) {
+        Propietarios propietarioActual = tableViewP.getSelectionModel().getSelectedItem();
+        Propietarios propietarioComprador = propietarioActual.generarArrayPropietariosCasas(propietarioActual);
+        tableColCID1.setCellValueFactory(new PropertyValueFactory<Casas,Integer>("id"));
+        tableColCDireccion1.setCellValueFactory(new PropertyValueFactory<Casas,String>("direccion"));
+        tableColCMetros1.setCellValueFactory(new PropertyValueFactory<Casas,Double>("metros"));
+        tableColCPrecio1.setCellValueFactory(new PropertyValueFactory<Casas,Double>("precio"));
+        tableColCAscensor1.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("ascensor"));
+        tableColCGaraje1.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("garaje"));
+        tableViewC1.setItems(FXCollections.observableArrayList(propietarioComprador.casas));
     }
     
 }

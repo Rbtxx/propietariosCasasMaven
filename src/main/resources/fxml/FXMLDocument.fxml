@@ -58,7 +58,7 @@
                         <Button fx:id="btnModificarC" layoutX="21.0" layoutY="297.0" mnemonicParsing="false" onAction="#modificarCasa" prefHeight="29.0" prefWidth="274.0" text="Modificar casa" />
                         <Button fx:id="btnGuardarC" layoutX="22.0" layoutY="333.0" mnemonicParsing="false" onAction="#guardarCambiosC" prefHeight="25.0" prefWidth="133.0" text="Guardar cambios" />
                         <Label layoutX="144.0" layoutY="25.0" text="Casas" />
-                        <TableView fx:id="tableViewP" layoutX="310.0" layoutY="58.0" prefHeight="476.0" prefWidth="394.0">
+                        <TableView fx:id="tableViewP" layoutX="310.0" layoutY="58.0" onMouseClicked="#mostrarCasas" prefHeight="231.0" prefWidth="394.0">
                           <columns>
                             <TableColumn fx:id="tablePColDNI" prefWidth="111.0" text="DNI" />
                               <TableColumn fx:id="tablePColNombre" prefWidth="109.0" text="Nombre" />
@@ -66,6 +66,16 @@
                           </columns>
                         </TableView>
                         <Label layoutX="475.0" layoutY="25.0" text="Propietarios" />
+                        <TableView fx:id="tableViewC1" layoutX="309.0" layoutY="297.0" prefHeight="230.0" prefWidth="394.0">
+                           <columns>
+                              <TableColumn fx:id="tableColCID1" prefWidth="25.0" text="ID" />
+                              <TableColumn fx:id="tableColCDireccion1" prefWidth="123.0" text="Direccion" />
+                              <TableColumn fx:id="tableColCPrecio1" prefWidth="69.0" text="Precio" />
+                              <TableColumn fx:id="tableColCMetros1" prefWidth="65.0" text="Metros" />
+                              <TableColumn fx:id="tableColCGaraje1" prefWidth="47.0" text="Garaje" />
+                              <TableColumn fx:id="tableColCAscensor1" prefWidth="64.0" text="Ascensor" />
+                           </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
             </content>

@@ -85,8 +85,38 @@ public class Propietarios {
         return ret;
     }
     
+    Propietarios generarArrayPropietariosCasas(Propietarios propietario){
+        casas.clear();
+        Conexion.cargarDriverMysql();
+        try(Connection con = Conexion.mysql(null, null, null)){
+            Statement st = con.createStatement();
+            int id = 0;
+            double precio = 0;
+            double metros = 0;
+            String direccion = "";
+            boolean ascensor = false;
+            boolean garaje = false;
+            Casas c;
+            ResultSet res = st.executeQuery("SELECT * FROM casas JOIN propietarioscasas ON casas.id = propietarioscasas.refidcasa WHERE '" + propietario.dni + "' = refdni");
+            while (res.next()) {
+                id = res.getInt("id");
+                precio = res.getDouble("precio");
+                metros = res.getDouble("metros");
+                direccion = res.getString("direccion");
+                ascensor = res.getBoolean("ascensor");
+                garaje = res.getBoolean("garaje");
+                c = new Casas(id, direccion, precio, metros, garaje, ascensor);
+                propietario.casas.add(c);
+            }   
+            st.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return propietario;
+    }
     
     void generarArray(){
+        casas.clear();
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
