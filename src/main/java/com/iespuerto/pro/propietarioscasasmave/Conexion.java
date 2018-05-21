@@ -29,7 +29,7 @@ public class Conexion {
 
         conexion=null;
         //Ip de en clase: 172.19.99.239
-        String jdbcUrl = "jdbc:mysql://192.168.1.174/propietariosCasas?serverTimezone=UTC";
+        String jdbcUrl = "jdbc:mysql://172.19.99.239/propietarioscasas?serverTimezone=UTC";
         String usuario = "root";
         String clave = "1q2w3e4r";
         if(url != null && !url.isEmpty())

@@ -136,6 +136,8 @@ public class FXMLController implements Initializable {
     private TableColumn<Casas, Boolean> tableColCGaraje1;
     @FXML
     private TableColumn<Casas, Boolean> tableColCAscensor1;
+    @FXML
+    private Button btnBorrarVinculo;
 
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -158,6 +160,16 @@ public class FXMLController implements Initializable {
         tablePColApellido.setCellValueFactory(new PropertyValueFactory<Propietarios,String>("apellido"));
         tableViewP.setItems(FXCollections.observableArrayList(c.propietarios));
     }
+    private void crearTablaC1(Propietarios propietarioComprador){
+        tableColCID1.setCellValueFactory(new PropertyValueFactory<Casas,Integer>("id"));
+        tableColCDireccion1.setCellValueFactory(new PropertyValueFactory<Casas,String>("direccion"));
+        tableColCMetros1.setCellValueFactory(new PropertyValueFactory<Casas,Double>("metros"));
+        tableColCPrecio1.setCellValueFactory(new PropertyValueFactory<Casas,Double>("precio"));
+        tableColCAscensor1.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("ascensor"));
+        tableColCGaraje1.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("garaje"));
+        tableViewC1.setItems(FXCollections.observableArrayList(propietarioComprador.casas));
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         c.generarArray();
@@ -302,7 +314,7 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void borrarCasa(ActionEvent event) {
-        c.borrarCasa(c.id);
+        c.borrarCasa(p.casas.get(contadorCasas));
         p.generarArray();
         txtDireccion.setText(p.casas.get(0).getDireccion());
         txtPrecio.setText("" + p.casas.get(0).getPrecio());
@@ -442,7 +454,7 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void borrarPropietario(ActionEvent event) {
-        p.borrarPropietario(p.dni);
+        p.borrarPropietario(c.propietarios.get(contadorPropietarios));
         c.generarArray();
         txtNombre.setText(c.propietarios.get(0).getNombre());
         txtApellido.setText(c.propietarios.get(0).getApellido());
@@ -581,13 +593,23 @@ public class FXMLController implements Initializable {
     private void mostrarCasas(MouseEvent event) {
         Propietarios propietarioActual = tableViewP.getSelectionModel().getSelectedItem();
         Propietarios propietarioComprador = propietarioActual.generarArrayPropietariosCasas(propietarioActual);
-        tableColCID1.setCellValueFactory(new PropertyValueFactory<Casas,Integer>("id"));
-        tableColCDireccion1.setCellValueFactory(new PropertyValueFactory<Casas,String>("direccion"));
-        tableColCMetros1.setCellValueFactory(new PropertyValueFactory<Casas,Double>("metros"));
-        tableColCPrecio1.setCellValueFactory(new PropertyValueFactory<Casas,Double>("precio"));
-        tableColCAscensor1.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("ascensor"));
-        tableColCGaraje1.setCellValueFactory(new PropertyValueFactory<Casas,Boolean>("garaje"));
-        tableViewC1.setItems(FXCollections.observableArrayList(propietarioComprador.casas));
+        crearTablaC1(propietarioComprador);
+    }
+
+    @FXML
+    private void borrarVinculo(MouseEvent event) {
+        Propietarios p = tableViewP.getSelectionModel().getSelectedItem();
+        Casas c = tableViewC1.getSelectionModel().getSelectedItem();
+        c.borrarVinculo(c);
+        crearTablaC1(p);
+        tableViewC1.getSelectionModel().clearSelection();
+        tableViewC1.refresh();
+        btnBorrarVinculo.setDisable(true);
+    }
+
+    @FXML
+    private void casavinculadaSelected(MouseEvent event) {
+        btnBorrarVinculo.setDisable(false);
     }
     
 }

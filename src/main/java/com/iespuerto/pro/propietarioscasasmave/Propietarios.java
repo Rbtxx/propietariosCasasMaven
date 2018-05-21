@@ -49,11 +49,13 @@ public class Propietarios {
         }
     }
     
-    void borrarPropietario(String dni){
+    
+    void borrarPropietario(Propietarios propietario){
         Conexion.cargarDriverMysql();
         try(Connection con = Conexion.mysql(null, null, null)){
             Statement st = con.createStatement();
-            st.executeUpdate("DELETE FROM propietarios WHERE '"+dni+"' = dni");
+            st.executeUpdate("DELETE FROM propietarioscasas WHERE '"+propietario.dni+"' = refPropietario");
+            st.executeUpdate("DELETE FROM propietarios WHERE '"+propietario.dni+"' = dni");
             st.close();
         }catch(Exception e){
             System.out.println(e);
@@ -97,9 +99,9 @@ public class Propietarios {
             boolean ascensor = false;
             boolean garaje = false;
             Casas c;
-            ResultSet res = st.executeQuery("SELECT * FROM casas JOIN propietarioscasas ON casas.id = propietarioscasas.refidcasa WHERE '" + propietario.dni + "' = refdni");
+            ResultSet res = st.executeQuery("SELECT * FROM casas JOIN propietarioscasas ON casas.idcasas = propietarioscasas.refCasa WHERE '" + propietario.dni + "' = refPropietarios");
             while (res.next()) {
-                id = res.getInt("id");
+                id = res.getInt("idcasas");
                 precio = res.getDouble("precio");
                 metros = res.getDouble("metros");
                 direccion = res.getString("direccion");
@@ -129,7 +131,7 @@ public class Propietarios {
             Casas c;
             ResultSet res = st.executeQuery("SELECT * FROM casas");
             while (res.next()) {
-                id = res.getInt("id");
+                id = res.getInt("idcasas");
                 precio = res.getDouble("precio");
                 metros = res.getDouble("metros");
                 direccion = res.getString("direccion");
